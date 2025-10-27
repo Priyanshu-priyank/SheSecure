@@ -9,7 +9,6 @@ import { postAlertToFirestore } from "../services/alertService";
 export default function Home() {
   const [userLocation, setUserLocation] = useState(null);
   const [unsafeZones, setUnsafeZones] = useState([
-    // sample zones (lat,lng arrays) — later store in Firestore
     {
       id: "z1",
       name: "Dark Alley",
@@ -31,12 +30,12 @@ export default function Home() {
     return () => navigator.geolocation.clearWatch(id);
   }, []);
 
-  // motion detection hook returns {type, confidence}
+  //motion detection hook returns
   const motion = useMotionDetector();
 
   useEffect(() => {
     if (motion && motion.type === "fall" && motion.confidence > 0.6) {
-      // ask user then auto SOS (for demo we'll auto-send)
+      //auto SOS
       handleAutoSOS("fall-detected");
     }
   }, [motion]);
@@ -72,10 +71,10 @@ export default function Home() {
       {/* Sound detector runs and can call a callback on detection */}
       <SoundDetector
         onDetect={async (label, prob) => {
-          // label 'help' or 'scream' from speech-commands model
+          //label 'help' or 'scream' from speech-commands model
           console.log("sound detected", label, prob);
           if (prob > 0.85) {
-            // auto SOS demo
+            //auto SOS demo
             if (!userLocation) return;
             await postAlertToFirestore({
               coords: { lat: userLocation[0], lng: userLocation[1] },
